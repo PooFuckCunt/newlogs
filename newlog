@@ -1,4 +1,24 @@
 #!/bin/bash
+#made this to try and diagnose system freezes it will log every recent addition
+#to /var/log every single minute if system freezes reboot and check the last entries
 cd /var/log
-tail $(file `ls -t |head -8` |grep -i ASCII | awk '{print $1}' | sed -e 's/:/\ /g') > /tmp/.lastlog 
-xdg-open /tmp/.lastlog
+rm -rf /var/log/ll.old
+mv /var/log/ll /var/log/ll.old
+mkdir -p /var/log/ll
+
+
+while :
+do
+mv /var/log/ll/lastlog.4 /var/log/ll/lastlog.5 
+mv /var/log/ll/lastlog.3 /var/log/ll/lastlog.4
+mv /var/log/ll/lastlog.2 /var/log/ll/lastlog.3 
+mv /var/log/ll/lastlog.1 /var/log/ll/lastlog.2 
+mv /var/log/ll/lastlog /var/log/ll/lastlog.1 
+tail $(file `ls -t |head -8` |grep -i ASCII | awk '{print $1}' | sed -e 's/:/\ /g') > /var/log/ll/lastlog
+sleep 60
+                                              
+
+
+
+                                         done
+
